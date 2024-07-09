@@ -1,0 +1,471 @@
+[gd_scene load_steps=37 format=3 uid="uid://4exuo4fjvncf"]
+
+[ext_resource type="Script" path="res://scripts/MainScene.gd" id="1_khi1f"]
+[ext_resource type="Script" path="res://scripts/GenerateButton.gd" id="2_kafuc"]
+[ext_resource type="Script" path="res://scripts/GenerateRoadPanel.gd" id="2_t46kr"]
+[ext_resource type="Theme" uid="uid://c7ci61323k72s" path="res://my_theme.tres" id="2_yqhpa"]
+[ext_resource type="Script" path="res://scripts/LimitsLabel.gd" id="3_c3u6p"]
+[ext_resource type="Script" path="res://scripts/GridContainer.gd" id="3_lqvst"]
+[ext_resource type="Texture2D" uid="uid://br8tybv42oc8h" path="res://images/theme/nine_path_5.png" id="3_sm5kq"]
+[ext_resource type="Texture2D" uid="uid://oftkxts0m0c" path="res://images/theme/nine_path_3.png" id="3_uygck"]
+[ext_resource type="Script" path="res://scripts/LengthSlider.gd" id="4_3t6kw"]
+[ext_resource type="Script" path="res://scripts/LimitsSlider.gd" id="4_3vgyn"]
+[ext_resource type="Script" path="res://scripts/LengthLabel.gd" id="5_5d5np"]
+[ext_resource type="Script" path="res://scripts/DijkstraPathButton.gd" id="5_infqo"]
+[ext_resource type="TileSet" uid="uid://daep6y3k2uy50" path="res://new_tile_set.tres" id="8_nr08h"]
+[ext_resource type="Texture2D" uid="uid://del3oinc3if16" path="res://images/theme/nine_path_focus.png" id="9_1s1mx"]
+[ext_resource type="Script" path="res://scripts/ZoomProgressBar.gd" id="9_2w4va"]
+[ext_resource type="Script" path="res://scripts/AStarPathButton.gd" id="11_bie3s"]
+[ext_resource type="Script" path="res://scripts/ZoomSlider.gd" id="11_qjd27"]
+[ext_resource type="Texture2D" uid="uid://btpaval1q4wut" path="res://images/theme/button_normal_dijkstra.png" id="12_yrcxx"]
+[ext_resource type="Texture2D" uid="uid://dnbgiu8q7ey67" path="res://images/theme/button_hover_dijkstra.png" id="13_sxfoj"]
+[ext_resource type="Texture2D" uid="uid://cmotc0iei8cdc" path="res://images/theme/button_normal_astar.png" id="13_t6ixd"]
+[ext_resource type="Texture2D" uid="uid://beitvv4ftlx7g" path="res://images/theme/button_pressed_dijkstra.png" id="14_0atv4"]
+[ext_resource type="Texture2D" uid="uid://caj2nvkjr44xl" path="res://images/theme/button_hover_astar.png" id="14_gop8o"]
+[ext_resource type="Script" path="res://scripts/startNode.gd" id="15_11yh1"]
+[ext_resource type="Texture2D" uid="uid://biogtchm63a6b" path="res://images/theme/button_pressed_astar.png" id="15_m46k6"]
+
+[sub_resource type="GDScript" id="GDScript_muwg3"]
+script/source = "extends Node2D
+
+
+"
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_d7qu6"]
+texture = ExtResource("9_1s1mx")
+texture_margin_left = 4.0
+texture_margin_top = 4.0
+texture_margin_right = 4.0
+texture_margin_bottom = 4.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_neb7r"]
+texture = ExtResource("3_uygck")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ixmf1"]
+texture = ExtResource("3_sm5kq")
+texture_margin_left = 5.0
+texture_margin_top = 8.0
+texture_margin_right = 7.0
+texture_margin_bottom = 5.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_qn3yl"]
+texture = ExtResource("12_yrcxx")
+texture_margin_left = 3.0
+texture_margin_top = 3.0
+texture_margin_right = 3.0
+texture_margin_bottom = 3.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_fk3hu"]
+texture = ExtResource("13_sxfoj")
+texture_margin_left = 3.0
+texture_margin_top = 3.0
+texture_margin_right = 3.0
+texture_margin_bottom = 3.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_mqs63"]
+texture = ExtResource("14_0atv4")
+texture_margin_left = 3.0
+texture_margin_top = 3.0
+texture_margin_right = 3.0
+texture_margin_bottom = 3.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_mlm6k"]
+texture = ExtResource("13_t6ixd")
+texture_margin_left = 3.0
+texture_margin_top = 3.0
+texture_margin_right = 3.0
+texture_margin_bottom = 3.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ige0k"]
+texture = ExtResource("14_gop8o")
+texture_margin_left = 3.0
+texture_margin_top = 3.0
+texture_margin_right = 3.0
+texture_margin_bottom = 3.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_yirvh"]
+texture = ExtResource("15_m46k6")
+texture_margin_left = 3.0
+texture_margin_top = 3.0
+texture_margin_right = 3.0
+texture_margin_bottom = 3.0
+
+[sub_resource type="Theme" id="Theme_dou2u"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2ve12"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[node name="Road" type="Node2D"]
+script = SubResource("GDScript_muwg3")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="BorderPanel" type="Panel" parent="CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_yqhpa")
+theme_type_variation = &"newPanel"
+theme_override_styles/panel = SubResource("StyleBoxTexture_d7qu6")
+
+[node name="GenerateRoadPanel" type="Panel" parent="CanvasLayer"]
+texture_filter = 1
+custom_minimum_size = Vector2(100, 100)
+offset_left = 12.0
+offset_top = 10.0
+offset_right = 138.0
+offset_bottom = 130.0
+theme = ExtResource("2_yqhpa")
+theme_override_styles/panel = SubResource("StyleBoxTexture_neb7r")
+script = ExtResource("2_t46kr")
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/GenerateRoadPanel"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 14
+theme_override_constants/margin_top = 14
+theme_override_constants/margin_right = 14
+theme_override_constants/margin_bottom = 17
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/GenerateRoadPanel/MarginContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="ParametersLabel" type="Label" parent="CanvasLayer/GenerateRoadPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(0.552941, 0.282353, 0.207843, 1)
+text = "PARAMETERS"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="GridContainer" type="GridContainer" parent="CanvasLayer/GenerateRoadPanel/MarginContainer/VBoxContainer"]
+texture_filter = 1
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 0
+columns = 2
+script = ExtResource("3_lqvst")
+
+[node name="LimitsLabel" type="Label" parent="CanvasLayer/GenerateRoadPanel/MarginContainer/VBoxContainer/GridContainer"]
+texture_filter = 1
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 0
+theme_override_colors/font_color = Color(0.552941, 0.282353, 0.207843, 1)
+text = "density"
+vertical_alignment = 1
+script = ExtResource("3_c3u6p")
+
+[node name="LimitsSlider" type="HSlider" parent="CanvasLayer/GenerateRoadPanel/MarginContainer/VBoxContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 7.0
+max_value = 15.0
+value = 1.0
+rounded = true
+script = ExtResource("4_3vgyn")
+metadata/_edit_use_anchors_ = true
+
+[node name="LengthLabel" type="Label" parent="CanvasLayer/GenerateRoadPanel/MarginContainer/VBoxContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 0
+theme_override_colors/font_color = Color(0.552941, 0.282353, 0.207843, 1)
+text = "length
+"
+vertical_alignment = 1
+script = ExtResource("5_5d5np")
+
+[node name="LengthSlider" type="HSlider" parent="CanvasLayer/GenerateRoadPanel/MarginContainer/VBoxContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 7.0
+max_value = 20.0
+value = 1.0
+rounded = true
+script = ExtResource("4_3t6kw")
+
+[node name="GenerateButton" type="Button" parent="CanvasLayer/GenerateRoadPanel/MarginContainer/VBoxContainer"]
+texture_filter = 1
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 4.0
+text = "generate 
+new road"
+text_overrun_behavior = 4
+script = ExtResource("2_kafuc")
+
+[node name="FindPathPanel" type="Panel" parent="CanvasLayer"]
+texture_filter = 1
+custom_minimum_size = Vector2(100, 100)
+offset_left = 19.0
+offset_top = 137.0
+offset_right = 130.0
+offset_bottom = 249.0
+theme = ExtResource("2_yqhpa")
+theme_override_styles/panel = SubResource("StyleBoxTexture_ixmf1")
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/FindPathPanel"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 14
+theme_override_constants/margin_top = 14
+theme_override_constants/margin_right = 14
+theme_override_constants/margin_bottom = 17
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/FindPathPanel/MarginContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="CanvasLayer/FindPathPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 6
+theme_override_colors/font_color = Color(0.552551, 0.283986, 0.207783, 1)
+text = "find path"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AlgorithmsGrid" type="GridContainer" parent="CanvasLayer/FindPathPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+columns = 2
+
+[node name="Label2" type="Label" parent="CanvasLayer/FindPathPanel/MarginContainer/VBoxContainer/AlgorithmsGrid"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+size_flags_stretch_ratio = 2.0
+theme_override_colors/font_color = Color(0.552941, 0.282353, 0.207843, 1)
+text = "algorithm"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label" type="Label" parent="CanvasLayer/FindPathPanel/MarginContainer/VBoxContainer/AlgorithmsGrid"]
+custom_minimum_size = Vector2(1, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 6
+theme_override_colors/font_color = Color(0.552941, 0.282353, 0.207843, 1)
+text = "time needed"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="DijkstraPathButton" type="Button" parent="CanvasLayer/FindPathPanel/MarginContainer/VBoxContainer/AlgorithmsGrid"]
+texture_filter = 1
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 2.0
+theme = ExtResource("2_yqhpa")
+theme_override_font_sizes/font_size = 10
+theme_override_styles/normal = SubResource("StyleBoxTexture_qn3yl")
+theme_override_styles/hover = SubResource("StyleBoxTexture_fk3hu")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_mqs63")
+text = "Dijkstra"
+script = ExtResource("5_infqo")
+
+[node name="DijkstraTimeLabel" type="Label" parent="CanvasLayer/FindPathPanel/MarginContainer/VBoxContainer/AlgorithmsGrid"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(0.552941, 0.282353, 0.207843, 1)
+theme_override_font_sizes/font_size = 10
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AStarPathButton" type="Button" parent="CanvasLayer/FindPathPanel/MarginContainer/VBoxContainer/AlgorithmsGrid"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 2.0
+theme_override_font_sizes/font_size = 10
+theme_override_styles/normal = SubResource("StyleBoxTexture_mlm6k")
+theme_override_styles/hover = SubResource("StyleBoxTexture_ige0k")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_yirvh")
+text = "A*"
+script = ExtResource("11_bie3s")
+
+[node name="AStarTimeLabel" type="Label" parent="CanvasLayer/FindPathPanel/MarginContainer/VBoxContainer/AlgorithmsGrid"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(0.552941, 0.282353, 0.207843, 1)
+theme_override_font_sizes/font_size = 10
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ScalePanel" type="Panel" parent="CanvasLayer"]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -147.0
+offset_top = -47.0
+offset_right = -11.0
+offset_bottom = -10.0
+grow_horizontal = 0
+grow_vertical = 0
+theme = ExtResource("2_yqhpa")
+theme_type_variation = &"newPanel"
+theme_override_styles/panel = SubResource("StyleBoxTexture_d7qu6")
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/ScalePanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 7
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 6
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/ScalePanel/MarginContainer"]
+layout_mode = 2
+
+[node name="ZoomProgressBar" type="ProgressBar" parent="CanvasLayer/ScalePanel/MarginContainer/VBoxContainer"]
+texture_filter = 1
+layout_mode = 2
+size_flags_vertical = 3
+min_value = 0.088
+max_value = 2.0
+value = 0.998
+script = ExtResource("9_2w4va")
+
+[node name="ZoomSlider" type="HSlider" parent="CanvasLayer/ScalePanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+min_value = 0.1
+max_value = 2.0
+step = 0.01
+value = 1.1
+script = ExtResource("11_qjd27")
+
+[node name="CameraPanel" type="Panel" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 175.0
+offset_top = 139.0
+offset_right = 225.0
+offset_bottom = 187.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = SubResource("Theme_dou2u")
+theme_override_styles/panel = SubResource("StyleBoxFlat_2ve12")
+
+[node name="MyCamera" type="MyCamera" parent="CameraPanel"]
+ignore_rotation = false
+limit_left = -58957488
+limit_top = -34575984
+limit_right = 59021472
+limit_bottom = 34610592
+limit_smoothed = true
+position_smoothing_speed = 0.02
+rotation_smoothing_speed = 1.0
+drag_left_margin = 0.0
+drag_top_margin = 0.0
+drag_right_margin = 0.0
+drag_bottom_margin = 0.0
+editor_draw_limits = true
+
+[node name="MainScene" type="Node2D" parent="."]
+script = ExtResource("1_khi1f")
+
+[node name="MyTileMap" type="MyTileMap" parent="MainScene"]
+texture_filter = 1
+tile_set = ExtResource("8_nr08h")
+layer_0/name = "road"
+layer_1/name = "pathAstar"
+layer_1/tile_data = PackedInt32Array()
+layer_2/name = "pathDijkstra"
+layer_2/tile_data = PackedInt32Array()
+layer_3/name = "houses"
+layer_3/tile_data = PackedInt32Array()
+layer_4/name = "trees"
+layer_4/tile_data = PackedInt32Array(4259913, 393218, 3, 4259914, 393218, 3, 4259915, 393218, 3, 4194375, 393218, 3, 4194376, 393218, 3, 4194383, 393218, 3, 4259919, 393218, 3, 4325455, 393218, 3, 4194384, 393218, 3, 4194385, 393218, 3, 4259920, 851970, 6, 4259921, 851970, 6, 4259922, 393218, 3, 4259923, 524290, 6, 4325458, 851970, 6, 4325457, 393218, 3, 4325456, 917506, 7, 4390992, 393218, 3, 4390993, 524290, 6, 4390994, 393218, 3, 4390995, 393218, 3, 4325459, 589826, 7, 4063307, 917506, 6, 4063308, 917506, 6, 4063309, 917506, 6, 4063310, 917506, 6, 4063311, 917506, 6, 4063312, 393218, 3, 4063313, 917506, 6, 4259908, 393218, 3, 4390981, 393218, 3, 4259909, 393218, 3, 4325445, 720898, 7, 4063299, 393218, 3, 4063300, 393218, 3, 4063301, 393218, 3, 4063302, 393218, 3, 4063303, 393218, 3, 4063304, 393218, 3, 4063305, 917506, 6, 4128841, 655362, 6, 4128840, 589826, 6, 4128839, 524290, 6, 4128838, 589826, 6, 4128837, 851970, 6, 4128836, 851970, 6, 4128835, 524290, 6, 4128834, 393218, 3, 4390984, 655362, 6, 4390985, 720898, 7, 4390986, 720898, 7, 4390987, 720898, 7, 4390988, 720898, 7, 4390989, 589826, 7, 4325453, 720898, 6, 4259917, 720898, 6, 4194381, 720898, 6, 4128845, 917506, 7, 4128846, 786434, 7, 4128847, 917506, 7, 4128848, 917506, 7, 4128849, 851970, 6, 4128850, 655362, 7, 4128844, 786434, 7, 4128843, 786434, 7, 4128842, 786434, 7, 4063306, 917506, 6, 3997777, 655362, 6, 3997778, 720898, 7, 3997779, 589826, 6, 4063315, 524290, 7, 4063316, 917506, 7, 4128852, 786434, 6, 4194388, 786434, 6, 4259924, 786434, 7, 4259925, 589826, 7, 4194389, 917506, 7, 4194390, 589826, 7, 4128854, 393218, 3, 4128853, 851970, 7, 4063317, 851970, 7, 3997781, 393218, 3, 3997780, 393218, 3, 4390978, 917506, 7, 4390979, 917506, 7, 4325442, 262146, 3, 4325443, 262146, 3, 4587581, 851970, 6, 4587582, 917506, 7, 4522045, 262146, 3, 4522046, 262146, 3, 4587583, 917506, 7, 4522047, 262146, 3, 4587584, 917506, 7, 4522048, 262146, 3, 4587585, 917506, 7, 4522049, 262146, 3, 4587586, 917506, 7, 4522050, 262146, 3, 4587587, 917506, 7, 4522051, 262146, 3, 4587588, 917506, 7, 4522052, 262146, 3, 4587589, 917506, 7, 4522053, 262146, 3, 4587590, 917506, 7, 4522054, 262146, 3, 4587591, 917506, 7, 4522055, 262146, 3, 4587592, 917506, 7, 4522056, 262146, 3, 4653128, 917506, 7, 4653127, 917506, 7, 4653126, 917506, 7, 4653125, 917506, 7, 4653124, 917506, 7, 4653123, 917506, 7, 4653122, 917506, 7, 4653121, 917506, 7, 4653120, 917506, 7, 4653119, 917506, 7, 4653118, 917506, 7, 4653117, 917506, 7, 4784190, 917506, 7, 4718654, 262146, 3, 4784192, 720898, 6, 4784191, 851970, 7, 4718655, 262146, 3, 4718656, 262146, 3, 4784193, 720898, 6, 4718657, 262146, 3, 4784194, 720898, 6, 4718658, 262146, 3, 4784195, 720898, 6, 4718659, 262146, 3, 4784196, 720898, 6, 4718660, 262146, 3, 4784197, 720898, 6, 4718661, 262146, 3, 4784198, 720898, 6, 4718662, 262146, 3, 4784199, 720898, 6, 4718663, 262146, 3, 4784200, 720898, 6, 4718664, 262146, 3, 4784201, 720898, 6, 4718665, 262146, 3, 4784202, 720898, 6, 4718666, 262146, 3, 4784203, 720898, 6, 4718667, 262146, 3, 4784204, 720898, 6, 4718668, 262146, 3, 4784205, 720898, 6, 4718669, 262146, 3, 4784206, 786434, 6, 4718670, 262146, 3, 4653134, 917506, 7, 4653132, 720898, 6, 4653133, 786434, 6, 4587597, 262146, 3, 4587598, 262146, 3, 4653131, 851970, 7, 4587596, 262146, 3, 4849738, 720898, 6, 4849737, 851970, 7, 4849739, 720898, 6, 4849740, 786434, 6, 4784179, 720898, 6, 4718652, 589826, 7, 4653116, 917506, 7, 4587580, 917506, 7, 4522044, 851970, 7, 4456508, 851970, 7, 4390972, 851970, 7, 4325436, 851970, 7, 4259900, 851970, 7, 4194364, 851970, 7, 4718651, 786434, 7, 4653115, 917506, 7, 4587579, 917506, 7, 4522043, 917506, 7, 4456507, 917506, 7, 4390971, 917506, 7, 4325435, 917506, 7, 4259899, 917506, 7, 4194363, 917506, 7, 4718650, 786434, 7, 4653114, 917506, 7, 4587578, 917506, 7, 4522042, 917506, 7, 4456506, 917506, 7, 4390970, 917506, 7, 4325434, 917506, 7, 4259898, 917506, 7, 4194362, 917506, 7, 4718649, 786434, 7, 4653113, 917506, 7, 4587577, 917506, 7, 4522041, 917506, 7, 4456505, 917506, 7, 4390969, 917506, 7, 4325433, 917506, 7, 4259897, 917506, 7, 4194361, 917506, 7, 4718648, 786434, 7, 4653112, 917506, 7, 4587576, 917506, 7, 4522040, 917506, 7, 4456504, 917506, 7, 4390968, 917506, 7, 4325432, 917506, 7, 4259896, 917506, 7, 4194360, 917506, 7, 4718647, 786434, 7, 4653111, 917506, 7, 4587575, 917506, 7, 4522039, 917506, 7, 4456503, 917506, 7, 4390967, 917506, 7, 4325431, 917506, 7, 4259895, 917506, 7, 4194359, 917506, 7, 4718646, 786434, 7, 4653110, 917506, 7, 4587574, 917506, 7, 4522038, 917506, 7, 4456502, 917506, 7, 4390966, 917506, 7, 4325430, 917506, 7, 4259894, 917506, 7, 4194358, 917506, 7, 4718645, 786434, 7, 4653109, 917506, 7, 4587573, 917506, 7, 4522037, 917506, 7, 4456501, 917506, 7, 4390965, 917506, 7, 4325429, 917506, 7, 4259893, 917506, 7, 4194357, 917506, 7, 4718644, 786434, 7, 4653108, 917506, 7, 4587572, 917506, 7, 4522036, 917506, 7, 4456500, 917506, 7, 4390964, 917506, 7, 4325428, 917506, 7, 4259892, 917506, 7, 4194356, 917506, 7, 4718643, 917506, 7, 4653107, 917506, 7, 4587571, 917506, 7, 4522035, 917506, 7, 4456499, 917506, 7, 4390963, 917506, 7, 4325427, 917506, 7, 4259891, 917506, 7, 4194355, 917506, 7, 4718642, 786434, 7, 4653106, 917506, 7, 4587570, 917506, 7, 4522034, 917506, 7, 4456498, 917506, 7, 4390962, 917506, 7, 4325426, 917506, 7, 4259890, 917506, 7, 4194354, 917506, 7, 4718641, 786434, 7, 4653105, 917506, 7, 4587569, 917506, 7, 4522033, 917506, 7, 4456497, 917506, 7, 4390961, 917506, 7, 4325425, 917506, 7, 4259889, 917506, 7, 4194353, 917506, 7, 4718640, 524290, 7, 4653104, 786434, 6, 4587568, 786434, 6, 4522032, 786434, 6, 4456496, 786434, 6, 4390960, 786434, 6, 4325424, 786434, 6, 4259888, 786434, 6, 4194352, 786434, 6, 5374009, 917506, 6, 5308473, 917506, 6, 5242937, 917506, 6, 5177401, 917506, 6, 5111865, 917506, 6, 5046329, 917506, 6, 4980793, 917506, 6, 4915257, 262146, 3, 5374008, 917506, 6, 5308472, 393218, 3, 5242936, 917506, 6, 5177400, 262146, 3, 5111864, 917506, 6, 5046328, 393218, 3, 4980792, 917506, 6, 4915256, 262146, 3, 5374007, 917506, 6, 5308471, 262146, 3, 5242935, 917506, 6, 5177399, 393218, 3, 5111863, 917506, 6, 5046327, 393218, 3, 4980791, 917506, 6, 4915255, 262146, 3, 5374006, 917506, 6, 5308470, 262146, 3, 5242934, 917506, 6, 5177398, 262146, 3, 5111862, 917506, 6, 5046326, 393218, 3, 4980790, 917506, 6, 4915254, 393218, 3, 5374005, 917506, 6, 5308469, 262146, 3, 5242933, 917506, 6, 5177397, 393218, 3, 5111861, 917506, 6, 5046325, 262146, 3, 4980789, 917506, 6, 4915253, 262146, 3, 5374004, 917506, 6, 5308468, 393218, 3, 5242932, 917506, 6, 5177396, 393218, 3, 5111860, 917506, 6, 5046324, 262146, 3, 4980788, 917506, 6, 4915252, 393218, 3, 5374003, 917506, 6, 5308467, 393218, 3, 5242931, 917506, 6, 5177395, 262146, 3, 5111859, 917506, 6, 5046323, 393218, 3, 4980787, 917506, 6, 4915251, 262146, 3, 5374002, 917506, 6, 5308466, 262146, 3, 5242930, 917506, 6, 5177394, 393218, 3, 5111858, 917506, 6, 5046322, 262146, 3, 4980786, 917506, 6, 4915250, 393218, 3, 5374001, 917506, 6, 5308465, 262146, 3, 5242929, 917506, 6, 5177393, 393218, 3, 5111857, 917506, 6, 5046321, 262146, 3, 4980785, 917506, 6, 4915249, 393218, 3)
+
+[node name="RoadGenerator" type="RoadGenerator" parent="MainScene/MyTileMap"]
+length = 1
+
+[node name="LSystemGenerator" type="LSystemGenerator" parent="MainScene/MyTileMap/RoadGenerator"]
+rules = PackedStringArray("F->[+F]F[-F],FF,[+F][-F],[-F]F[+F]")
+"root sentence" = "[F]--F"
+"iteration limit" = 7
+
+[node name="GodotAStar" type="GodotAStar" parent="MainScene"]
+
+[node name="startNode" type="Node2D" parent="MainScene/GodotAStar"]
+scale = Vector2(0.176758, 0.1265)
+script = ExtResource("15_11yh1")
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="MainScene/GodotAStar/startNode"]
+debug_use_custom = true
+debug_path_custom_color = Color(0.283032, 0.758088, 0.748957, 1)
+debug_path_custom_line_width = 4.0
+
+[node name="endNode" type="Node2D" parent="MainScene/GodotAStar"]
+
+[connection signal="mouse_entered" from="CanvasLayer/GenerateRoadPanel" to="CanvasLayer/GenerateRoadPanel" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="CanvasLayer/GenerateRoadPanel" to="CanvasLayer/GenerateRoadPanel" method="_on_mouse_exited"]
+[connection signal="mouse_entered" from="CanvasLayer/GenerateRoadPanel/MarginContainer/VBoxContainer/GridContainer" to="CanvasLayer/GenerateRoadPanel/MarginContainer/VBoxContainer/GridContainer" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="CanvasLayer/GenerateRoadPanel/MarginContainer/VBoxContainer/GridContainer" to="CanvasLayer/GenerateRoadPanel/MarginContainer/VBoxContainer/GridContainer" method="_on_mouse_exited"]
+[connection signal="mouse_entered" from="CanvasLayer/GenerateRoadPanel/MarginContainer/VBoxContainer/GridContainer/LimitsLabel" to="CanvasLayer/GenerateRoadPanel/MarginContainer/VBoxContainer/GridContainer/LimitsLabel" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="CanvasLayer/GenerateRoadPanel/MarginContainer/VBoxContainer/GridContainer/LimitsLabel" to="CanvasLayer/GenerateRoadPanel/MarginContainer/VBoxContainer/GridContainer/LimitsLabel" method="_on_mouse_exited"]
+[connection signal="drag_ended" from="CanvasLayer/GenerateRoadPanel/MarginContainer/VBoxContainer/GridContainer/LimitsSlider" to="CanvasLayer/GenerateRoadPanel/MarginContainer/VBoxContainer/GridContainer/LimitsSlider" method="_on_drag_ended"]
+[connection signal="mouse_entered" from="CanvasLayer/GenerateRoadPanel/MarginContainer/VBoxContainer/GridContainer/LimitsSlider" to="CanvasLayer/GenerateRoadPanel/MarginContainer/VBoxContainer/GridContainer/LimitsSlider" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="CanvasLayer/GenerateRoadPanel/MarginContainer/VBoxContainer/GridContainer/LimitsSlider" to="CanvasLayer/GenerateRoadPanel/MarginContainer/VBoxContainer/GridContainer/LimitsSlider" method="_on_mouse_exited"]
+[connection signal="mouse_entered" from="CanvasLayer/GenerateRoadPanel/MarginContainer/VBoxContainer/GridContainer/LengthLabel" to="CanvasLayer/GenerateRoadPanel/MarginContainer/VBoxContainer/GridContainer/LengthLabel" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="CanvasLayer/GenerateRoadPanel/MarginContainer/VBoxContainer/GridContainer/LengthLabel" to="CanvasLayer/GenerateRoadPanel/MarginContainer/VBoxContainer/GridContainer/LengthLabel" method="_on_mouse_exited"]
+[connection signal="drag_ended" from="CanvasLayer/GenerateRoadPanel/MarginContainer/VBoxContainer/GridContainer/LengthSlider" to="CanvasLayer/GenerateRoadPanel/MarginContainer/VBoxContainer/GridContainer/LengthSlider" method="_on_drag_ended"]
+[connection signal="mouse_entered" from="CanvasLayer/GenerateRoadPanel/MarginContainer/VBoxContainer/GridContainer/LengthSlider" to="CanvasLayer/GenerateRoadPanel/MarginContainer/VBoxContainer/GridContainer/LengthSlider" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="CanvasLayer/GenerateRoadPanel/MarginContainer/VBoxContainer/GridContainer/LengthSlider" to="CanvasLayer/GenerateRoadPanel/MarginContainer/VBoxContainer/GridContainer/LengthSlider" method="_on_mouse_exited"]
+[connection signal="mouse_entered" from="CanvasLayer/GenerateRoadPanel/MarginContainer/VBoxContainer/GenerateButton" to="CanvasLayer/GenerateRoadPanel/MarginContainer/VBoxContainer/GenerateButton" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="CanvasLayer/GenerateRoadPanel/MarginContainer/VBoxContainer/GenerateButton" to="CanvasLayer/GenerateRoadPanel/MarginContainer/VBoxContainer/GenerateButton" method="_on_mouse_exited"]
+[connection signal="pressed" from="CanvasLayer/GenerateRoadPanel/MarginContainer/VBoxContainer/GenerateButton" to="CanvasLayer/GenerateRoadPanel/MarginContainer/VBoxContainer/GenerateButton" method="_on_pressed"]
+[connection signal="mouse_entered" from="CanvasLayer/FindPathPanel" to="CanvasLayer/FindPathPanel" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="CanvasLayer/FindPathPanel" to="CanvasLayer/FindPathPanel" method="_on_mouse_exited"]
+[connection signal="mouse_entered" from="CanvasLayer/FindPathPanel/MarginContainer/VBoxContainer/AlgorithmsGrid/DijkstraPathButton" to="CanvasLayer/FindPathPanel/MarginContainer/VBoxContainer/AlgorithmsGrid/DijkstraPathButton" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="CanvasLayer/FindPathPanel/MarginContainer/VBoxContainer/AlgorithmsGrid/DijkstraPathButton" to="CanvasLayer/FindPathPanel/MarginContainer/VBoxContainer/AlgorithmsGrid/DijkstraPathButton" method="_on_mouse_exited"]
+[connection signal="pressed" from="CanvasLayer/FindPathPanel/MarginContainer/VBoxContainer/AlgorithmsGrid/DijkstraPathButton" to="CanvasLayer/FindPathPanel/MarginContainer/VBoxContainer/AlgorithmsGrid/DijkstraPathButton" method="_on_pressed"]
+[connection signal="mouse_entered" from="CanvasLayer/FindPathPanel/MarginContainer/VBoxContainer/AlgorithmsGrid/AStarPathButton" to="CanvasLayer/FindPathPanel/MarginContainer/VBoxContainer/AlgorithmsGrid/AStarPathButton" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="CanvasLayer/FindPathPanel/MarginContainer/VBoxContainer/AlgorithmsGrid/AStarPathButton" to="CanvasLayer/FindPathPanel/MarginContainer/VBoxContainer/AlgorithmsGrid/AStarPathButton" method="_on_mouse_exited"]
+[connection signal="pressed" from="CanvasLayer/FindPathPanel/MarginContainer/VBoxContainer/AlgorithmsGrid/AStarPathButton" to="CanvasLayer/FindPathPanel/MarginContainer/VBoxContainer/AlgorithmsGrid/AStarPathButton" method="_on_pressed"]
+[connection signal="mouse_entered" from="CanvasLayer/ScalePanel/MarginContainer/VBoxContainer/ZoomProgressBar" to="CanvasLayer/ScalePanel/MarginContainer/VBoxContainer/ZoomProgressBar" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="CanvasLayer/ScalePanel/MarginContainer/VBoxContainer/ZoomProgressBar" to="CanvasLayer/ScalePanel/MarginContainer/VBoxContainer/ZoomProgressBar" method="_on_mouse_exited"]
+[connection signal="ready" from="CanvasLayer/ScalePanel/MarginContainer/VBoxContainer/ZoomProgressBar" to="CanvasLayer/GenerateRoadPanel" method="_on_zoom_progress_bar_ready"]
+[connection signal="mouse_entered" from="CanvasLayer/ScalePanel/MarginContainer/VBoxContainer/ZoomSlider" to="CanvasLayer/ScalePanel/MarginContainer/VBoxContainer/ZoomSlider" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="CanvasLayer/ScalePanel/MarginContainer/VBoxContainer/ZoomSlider" to="CanvasLayer/ScalePanel/MarginContainer/VBoxContainer/ZoomSlider" method="_on_mouse_exited"]
+[connection signal="value_changed" from="CanvasLayer/ScalePanel/MarginContainer/VBoxContainer/ZoomSlider" to="CanvasLayer/ScalePanel/MarginContainer/VBoxContainer/ZoomSlider" method="_on_value_changed"]
+[connection signal="zoom_changed" from="CameraPanel/MyCamera" to="MainScene" method="_on_my_camera_zoom_changed"]
+[connection signal="time_a_star_changed" from="MainScene/MyTileMap" to="MainScene" method="_on_my_tile_map_time_a_star_changed"]
+[connection signal="time_dijkstra_changed" from="MainScene/MyTileMap" to="MainScene" method="_on_my_tile_map_time_dijkstra_changed"]

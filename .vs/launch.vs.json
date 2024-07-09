@@ -1,0 +1,19 @@
+{
+  "version": "0.2.2",
+  "defaults": {},
+  "configurations": [
+    {
+      "type": "default",
+      "project": "C:\\Godot\\Godot_v4.2.2-stable_win64.exe",
+      "name": "Godot Game",
+      "args": [ "--path", "C:\\Users\\1\\Desktop\\gdextension_example\\demo" ]
+    },
+
+    {
+      "type": "default",
+      "project": "C:\\Godot\\Godot_v4.2.2-stable_win64.exe",
+      "name": "Godot Editor",
+      "args": [ "C:/Users/1\\Desktop/gdextension_example/demo/project.godot" ]
+    }
+  ]
+}
